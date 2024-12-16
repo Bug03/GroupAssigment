@@ -1,5 +1,5 @@
 import sys
-sys.path.append("E:\Testing Subject")
+sys.path.append("D:/myproject/test/coffee_testing")
 import time
 from mydriver.mydriver import Driver
 from pages.login_page import LoginPage
@@ -86,10 +86,17 @@ class TestCategoryManagement(Driver):
         time.sleep(3)
         category_management_page = CategoryManagementPage(driver)
         category_management_page.navigate_to_add_category_page()
-        category_management_page.fill_form_add_category("Trái cây")
+        category_management_page.fill_form_add_category("hehee")
         time.sleep(1)
         success_message = category_management_page.get_success_message()
         assert success_message == "Khởi tạo dữ liệu thành công"
+
+        # Điều hướng đến danh sách
+        category_management_page.navigate_to_category_list()
+        time.sleep(2)
+
+        category_list = category_management_page.get_category_list()
+        assert "hehee" in category_list
 
     def test_add_category_empty_name(self, driver):
         login_page = LoginPage(driver)
@@ -114,7 +121,7 @@ class TestCategoryManagement(Driver):
         category_management_page.navigate_to_add_category_page()
         category_management_page.fill_form_add_category("Cà phê đóng gói")
         time.sleep(1)
-        assert "Duplicate entry" in driver.page_source
+        assert "Trường tên đã có trong cơ sở dữ liệu." in driver.page_source
 
     def test_add_category_special_characters(self, driver):
         login_page = LoginPage(driver)
@@ -150,10 +157,17 @@ class TestCategoryManagement(Driver):
         category_management_page = CategoryManagementPage(driver)
         category_management_page.navigate_to_category_page()
         category_management_page.navigate_to_update_category()
-        category_management_page.fill_form_update_category("demo")
+        category_management_page.fill_form_update_category("update")
         time.sleep(1)
         success_message = category_management_page.get_success_message()
-        assert success_message == "Cập nhật dữ liệu thành công!"
+        assert success_message == "Cập nhập dữ liệu thành công!"
+
+        # Điều hướng đến danh sách
+        category_management_page.navigate_to_category_list()
+        time.sleep(2)
+
+        category_list = category_management_page.get_category_list()
+        assert "update" in category_list
 
     def test_update_empty_name_category(self, driver):
         login_page = LoginPage(driver)
@@ -180,7 +194,7 @@ class TestCategoryManagement(Driver):
         category_management_page.navigate_to_update_category()
         category_management_page.fill_form_update_category("Cà phê đóng gói")
         time.sleep(1)
-        assert "Duplicate entry" in driver.page_source
+        assert "Trường tên đã có trong cơ sở dữ liệu." in driver.page_source
 
     def test_update_special_characters_category(self, driver):
         login_page = LoginPage(driver)
